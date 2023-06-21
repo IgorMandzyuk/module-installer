@@ -13,7 +13,9 @@
 - Install via composer  
   
 
-- Maintance mode while installing extension  
+- Maintance mode while installing extension
+
+- Deploy Mahento (with down time)
   
 
 <br/>  
