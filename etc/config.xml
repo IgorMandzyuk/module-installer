@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright ©  All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <iminstaller>
+            <general>
+                <enabled>0</enabled>
+            </general>
+            <installer>
+                <afterenabled>0</afterenabled>
+            </installer>
+            <maintenance>
+                <installmaintenance>1</installmaintenance>
+                <title>We`ll be back soon!</title>
+                <desription>Sorry for the inconvenience.</desription>
+                <copyright></copyright>
+            </maintenance>
+        </iminstaller>
+    </default>
+</config>

@@ -1,0 +1,22 @@
+{
+    "name": "im/module-installer",
+    "description": "Install module is simple with Installer.",
+    "type": "magento2-module",
+    "license": "GPL-3.0",
+    "authors": [
+        {
+            "name": "Ihor Mandziuk",
+            "email": "mr.mandzyuk@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {},
+    "autoload": {
+        "files": [
+            "registration.php"
+        ],
+        "psr-4": {
+            "Im\\Installer\\": ""
+        }
+    }
+}

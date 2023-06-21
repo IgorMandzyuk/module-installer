@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright ©  All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="Im_Installer::index_index" title="Installer" translate="title" module="Im_Installer" sortOrder="40" parent="Magento_Backend::system_tools" action="im_installer/module/grid" resource="Im_Installer::setup_wizard"/>
+    </menu>
+</config>

@@ -1,0 +1,127 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+?>
+<?php
+/** @var $block \Magento\ImportExport\Block\Adminhtml\Import\Edit\Before */
+/** @var \Magento\Framework\View\Helper\SecureHtmlRenderer $secureRenderer */
+?>
+
+<?php $scriptString = <<<script
+require([
+    'jquery',
+    'Magento_Ui/js/modal/alert',
+    'prototype'
+], function(jQuery, alert){
+
+//<![CDATA[
+    varienImport = {
+
+        /**
+         * Base url
+         * @type {string}
+         */
+        sampleFilesBaseUrl: '{$block->escapeJs($block->getUrl('im_installer/module_install/archive'))}',
+        
+        sampleFilesBaseUrll: '{$block->escapeJs($block->getUrl('im_installer/module_install/composer'))}',
+        
+        startInstallation: function() {
+            let archiveTab = jQuery('#archive_tab').parent().parent();
+            if (archiveTab.attr('aria-hidden') !== 'true') {
+               this.postToFrame();
+            } else {
+                this.composerInstall();
+            }
+        },
+
+        /**
+         * Show/hide sample file link
+         * @param {string} entityId
+         */
+        composerInstall: function(newActionUrl) {
+            let package = jQuery('#package').val();
+   
+            jQuery('body')
+                .loader({
+                    icon: jQuery('#loading_mask_loader img').attr('src')
+                })
+                .loader('show');
+            var form = jQuery('#install_form')
+                .one('invalid-form.validate', function(e){jQuery('body').loader('hide')});
+
+            newActionUrl = (newActionUrl ? newActionUrl : form.attr('action'));
+            if (newActionUrl.lastIndexOf('form_key') === -1) {
+                newActionUrl = newActionUrl +
+                    (newActionUrl.lastIndexOf('?') !== -1 ? '&' : '?') +
+                    'form_key=' + encodeURIComponent(form.find('[name="form_key"]').val());
+            }
+           
+            jQuery.ajax({
+              type: "post",
+              url: this.sampleFilesBaseUrll,
+              data: { package: package },
+            }).success(function (data) {
+                jQuery('body').loader({icon: jQuery('#loading_mask_loader img').attr('src')}).loader('hide');
+                let response = JSON.parse(data).messages;
+                let status = JSON.parse(data).status;
+                
+                jQuery("#anchor-content").prepend('<div id="messages"><div class="messages"><div class="message message-success success"><div data-ui-id="messages-message-success">File has been successfully uploaded</div></div></div></div>');
+               
+                }).fail(function (xhr, ajaxOptions, thrownError) {
+                jQuery("#anchor-content").prepend('<div id="messages"><div class="messages"><div class="message message-success success"><div data-ui-id="messages-message-success">File has been successfully uploaded</div></div></div></div>');
+                });
+        },
+
+        /**
+         * Post form data to dynamic iframe.
+         * @param {string} newActionUrl OPTIONAL Change form action to this if specified
+         */
+        postToFrame: function(newActionUrl) {
+            jQuery('body')
+                .loader({
+                    icon: jQuery('#loading_mask_loader img').attr('src')
+                })
+                .loader('show');
+            var form = jQuery('#install_form')
+                .one('invalid-form.validate', function(e){jQuery('body').loader('hide')});
+
+            newActionUrl = (newActionUrl ? newActionUrl : form.attr('action'));
+            if (newActionUrl.lastIndexOf('form_key') === -1) {
+                newActionUrl = newActionUrl +
+                    (newActionUrl.lastIndexOf('?') !== -1 ? '&' : '?') +
+                    'form_key=' + encodeURIComponent(form.find('[name="form_key"]').val());
+            }
+
+            var file = document.getElementById('archive').files[0];
+            var data = new FormData();
+            data.append( 'file' , file );
+            data.append( 'form_key' , window.FORM_KEY );
+           
+            jQuery.ajax({
+              type: "post",
+              url: this.sampleFilesBaseUrl,
+              data: data,
+              cache: false,
+                contentType: false,  
+                processData: false, 
+            }).success(function (data) {
+                jQuery('body').loader({icon: jQuery('#loading_mask_loader img').attr('src')}).loader('hide');
+                let response = JSON.parse(data).messages;
+                let status = JSON.parse(data).status;
+                
+                jQuery("#anchor-content").prepend('<div id="messages"><div class="messages"><div class="message message-success success"><div data-ui-id="messages-message-success">File has been successfully uploaded</div></div></div></div>');
+               
+                }).fail(function (xhr, ajaxOptions, thrownError) {
+                jQuery("#anchor-content").prepend('<div id="messages"><div class="messages"><div class="message message-success success"><div data-ui-id="messages-message-success">File has been successfully uploaded</div></div></div></div>');
+                });
+        },
+    };
+//]]>
+
+});
+script;
+?>
+<?= /* @noEscape */
+$secureRenderer->renderTag('script', [], $scriptString, false) ?>
